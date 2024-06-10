@@ -18,8 +18,8 @@ class MyHomeAppliance2ApplicationTests(
 	fun contextLoads() {
 	}
 	@Test
-	fun `GET-api-appliances-idsリクエストに200を返す`(){
-		val response = restTemplate.getForEntity("http://localhost:$port/todos", String::class.java)
+	fun `GET-api-appliances-idsリクエストに200を返す`() {
+		val response = restTemplate.getForEntity("http://localhost:$port/api/appliances/ids", String::class.java)
 		assertThat(response.statusCode, equalTo(HttpStatus.OK))
 	}
 }
