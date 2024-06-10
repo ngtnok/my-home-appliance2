@@ -1,0 +1,13 @@
+CREATE TABLE maker (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL
+);
+CREATE TABLE category (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    durable NUMERIC
+);
+CREATE TABLE useplace (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL
+);
