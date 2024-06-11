@@ -50,6 +50,7 @@ class MyHomeIds2ApplicationTests(
 		val todos = response.body!!
 		assertThat(todos.name, equalTo("ホットクック"))
 		assertThat(todos.maker, equalTo("SHARP"))
+		assertThat(todos.category, equalTo("大型家電"))
 		assertThat(todos.modelNumber, equalTo("KN-HW24F-R"))
 	}
 }

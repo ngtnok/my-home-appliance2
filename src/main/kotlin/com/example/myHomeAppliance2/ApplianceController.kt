@@ -1,17 +1,18 @@
 package com.example.myHomeAppliance2
 
+import jakarta.websocket.server.PathParam
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ApplianceController(val idsRepository: IdsRepository) {
+class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepository: ItemDetailsRepository) {
     @GetMapping("/api/appliances/ids")
     fun getIds(): List<Ids> {
         return idsRepository.getIds()
     }
     @GetMapping("/api/appliances/{id}")
-    fun getId(): String {
-        return "id返したいよ"
-//        return idsRepository.getIdDetails()
+    fun getId(@PathVariable("id") id : Long): ItemDetails {
+        return itemDetailsRepository.getItemDetails(id)
     }
 }
