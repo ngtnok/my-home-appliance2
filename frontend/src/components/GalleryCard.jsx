@@ -1,14 +1,15 @@
 import Card from 'react-bootstrap/Card';
 import {useState,useEffect} from 'react';
 
-function GalleryCard() {
+function GalleryCard({ setView }) {
     const [gallery, setGallery] = useState([]);
     useEffect(()=>{
         fetch("/api/appliances/ids").then(res=>res.json()).then(jsoned => setGallery(jsoned)).catch(err=> console.error(err))
         },[])
 
     const cardClick = (id) => {
-        fetch(`/api/appliances/${id}`).then(res=>res.json()).then(jsoned => console.log(jsoned)).catch(err=> console.error(err))
+        fetch(`/api/appliances/${id}`).then(res=>res.json()).then(jsoned => console.log(jsoned)).catch(err=> console.error(err));
+        setView("detailsView");
         }
 
   return (
