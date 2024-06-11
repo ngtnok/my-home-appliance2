@@ -6,10 +6,11 @@ import Details from './components/Details'
 
 function App() {
     const [view, setView] = useState("homeView");
+    const [selectedId, setId] = useState(0);
   return (
       <>
       <HeaderMenu />
-      {view === "homeView" ? <GalleryCard setView={setView} />: <Details />}
+      {view === "homeView" ? <GalleryCard setView={setView} setId={setId}/>: <Details selectedId={selectedId}/>}
       </>
   )
 }
