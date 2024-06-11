@@ -3,6 +3,7 @@ package com.example.myHomeAppliance2
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.queryForObject
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
@@ -24,11 +25,12 @@ class ItemDetailsRepository(
         val sql: String = "SELECT appliance.id,appliance.name,maker.name AS maker,category.name AS category,appliance.model_number FROM appliance " +
                 "INNER JOIN maker ON maker.id = appliance.maker_id " +
                 "INNER JOIN category ON category.id = appliance.category_id " +
-                "WHERE appliance.id = " + id
-        val list: List<ItemDetails> =jdbcTemplate.query(
+                "WHERE appliance.id = ?"
+        return jdbcTemplate.queryForObject(
             sql,
-            itemRowMapper
-        )
-        return list[0]
+            itemRowMapper,
+            id
+        )!!
+//        return list
     }
 }

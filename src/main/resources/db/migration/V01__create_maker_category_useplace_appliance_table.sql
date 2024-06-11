@@ -7,7 +7,7 @@ CREATE TABLE category (
     name VARCHAR NOT NULL,
     durable NUMERIC
 );
-CREATE TABLE useplace (
+CREATE TABLE use_place (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL
 );
