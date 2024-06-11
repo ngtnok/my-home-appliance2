@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@Sql("/insert_appliance.sql")
+@Sql("/insert_family_to_appliance.sql")
 class MyHomeIds2ApplicationTests(
 	@Autowired val restTemplate: TestRestTemplate,
 	@LocalServerPort val port: Int
