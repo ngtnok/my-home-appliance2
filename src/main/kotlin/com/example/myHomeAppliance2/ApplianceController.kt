@@ -17,6 +17,10 @@ class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepos
     fun getId(@PathVariable("id") id : Long): ItemDetails {
         return itemDetailsRepository.getItemDetails(id)
     }
+    @PostMapping("/api/appliances")
+    fun addMyAppliance(@RequestBody addAppliance: AddAppliance):String {
+        return "家電登録したいよ"
+    }
     @PostMapping("/api/appliances/ids")
     fun getMyIds(@RequestBody id: Id):List<Ids> {
         return idsRepository.getMyIds(id.id)
