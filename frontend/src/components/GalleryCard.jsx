@@ -4,7 +4,15 @@ import {useState,useEffect} from 'react';
 function GalleryCard({ setView, setId }) {
     const [gallery, setGallery] = useState([]);
     useEffect(()=>{
-        fetch("/api/appliances/ids").then(res=>res.json()).then(jsoned => setGallery(jsoned)).catch(err=> console.error(err))
+        const url = "/api/appliances/ids";
+        const id = 1;
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id })
+        }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
         },[])
 
     const cardClick = (id) => {
@@ -32,7 +40,7 @@ function GalleryCard({ setView, setId }) {
         </Card>
       ))}
     </>
-  );
+  )
 }
 
 export default GalleryCard;
