@@ -2,12 +2,11 @@ package com.example.myHomeAppliance2
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.not
-import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -37,6 +36,24 @@ class MyHomeIds2ApplicationTests(
 		assertThat(todos[0].name, equalTo("キーボード"))
 		assertThat(todos[2].id, equalTo(3))
 		assertThat(todos[2].name, equalTo("ホットクック"))
+	}
+	@Test
+	fun `POST-api-appliance-idsリクエストに200を返す`() {
+		val request = Id(1)
+		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances/ids",request,String::class.java)
+		assertThat(response.statusCode, equalTo(HttpStatus.OK))
+	}
+	@Test
+	fun `POST-api-appliance-idsリクエストに家族ID一致するIdsリストを返す`(){
+		val request = Id(1)
+		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances/ids",request,Array<Ids>::class.java)
+		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
+		val arrayIds = response.body!!
+		assertThat(arrayIds.size, equalTo(2))
+		assertThat(arrayIds[0].id, equalTo(1))
+		assertThat(arrayIds[0].name, equalTo("キーボード"))
+		assertThat(arrayIds[1].id, equalTo(3))
+		assertThat(arrayIds[1].name, equalTo("ホットクック"))
 	}
 	@Test
 	fun `GET-api-appliances-idリクエストに200を返す`(){

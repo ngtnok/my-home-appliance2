@@ -1,3 +1,3 @@
 package com.example.myHomeAppliance2
 
-//data class FamilyId()
+data class Id(val id : Long)
