@@ -42,11 +42,11 @@ class ItemDetailsRepository(
     fun insertItem(addAppliance: AddAppliance): Id{
         val selectIdSql: String = "SELECT id FROM appliance WHERE model_number = ?"
         // 既存がなかったらエラーになる？
-        val selectAppId: Id = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
-        val categoryId = jdbcTemplate.queryForObject("SELECT id FROM category WHERE name = ?", idRowMapper ,addAppliance.categoryName)
+//        val selectAppId: Id = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
+//        val categoryId = jdbcTemplate.queryForObject("SELECT id FROM category WHERE name = ?", idRowMapper ,addAppliance.categoryName)
         // 既存がないときだけ、INSERTすべき
-        val insertAppSql: String = "INSERT INTO appliance(name, maker_id, category_id,model_number) VALUES (?,?,?,?)"
-        jdbcTemplate.update(insertAppSql,addAppliance.applianceName,addAppliance.makerId,categoryId,addAppliance.modelNumber)
+//        val insertAppSql: String = "INSERT INTO appliance(name, maker_id, category_id,model_number) VALUES (?,?,?,?)"
+//        jdbcTemplate.update(insertAppSql,addAppliance.applianceName,addAppliance.makerId,categoryId,addAppliance.modelNumber)
 
         val insertSql: String = "INSERT INTO family_to_appliance (family_id,appliance_id,use_place_id,buy_date,buy_at) " +
                 "VALUES (?,?,?,?,?)"
