@@ -18,8 +18,8 @@ class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepos
         return itemDetailsRepository.getItemDetails(id)
     }
     @PostMapping("/api/appliances")
-    fun addMyAppliance(@RequestBody addAppliance: AddAppliance):String {
-        return "家電登録したいよ"
+    fun addMyAppliance(@RequestBody addAppliance: AddAppliance):Id{
+        return itemDetailsRepository.insertItem(addAppliance)
     }
     @PostMapping("/api/appliances/ids")
     fun getMyIds(@RequestBody id: Id):List<Ids> {

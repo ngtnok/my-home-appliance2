@@ -15,11 +15,18 @@ class ItemRowMapper : RowMapper<ItemDetails> {
             rs.getString(3),rs.getString(4),rs.getString(5))
     }
 }
+@Component
+class IdRowMapper : RowMapper<Id> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): Id? {
+        return Id(rs.getLong(1))
+    }
+}
 
 @Repository
 class ItemDetailsRepository(
     @Autowired val jdbcTemplate: JdbcTemplate,
-    @Autowired val itemRowMapper: ItemRowMapper
+    @Autowired val itemRowMapper: ItemRowMapper,
+    @Autowired val idRowMapper: IdRowMapper
 ){
     fun getItemDetails( id :Long): ItemDetails {
         val sql: String = "SELECT appliance.id,appliance.name,maker.name AS maker,category.name AS category,appliance.model_number FROM appliance " +
@@ -31,6 +38,19 @@ class ItemDetailsRepository(
             itemRowMapper,
             id
         )!!
-//        return list
+    }
+    fun insertItem(addAppliance: AddAppliance): Id{
+        val selectIdSql: String = "SELECT id FROM appliance WHERE model_number = ?"
+        // 既存がなかったらエラーになる？
+        val selectAppId: Id = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
+        val categoryId = jdbcTemplate.queryForObject("SELECT id FROM category WHERE name = ?", idRowMapper ,addAppliance.categoryName)
+        // 既存がないときだけ、INSERTすべき
+        val insertAppSql: String = "INSERT INTO appliance(name, maker_id, category_id,model_number) VALUES (?,?,?,?)"
+        jdbcTemplate.update(insertAppSql,addAppliance.applianceName,addAppliance.makerId,categoryId,addAppliance.modelNumber)
+
+        val insertSql: String = "INSERT INTO family_to_appliance (family_id,appliance_id,use_place_id,buy_date,buy_at) " +
+                "VALUES (?,?,?,?,?)"
+        jdbcTemplate.update(insertSql,addAppliance.familyId,selectAppId.id,addAppliance.usePlaceId,addAppliance.buyDate,addAppliance.buyAt)
+        return selectAppId;
     }
 }
