@@ -9,7 +9,7 @@ function DetailsMenu({selectedId, view}) {
       <Nav.Item>
           {selectedId === 0?
             <Nav.Link eventKey="link-2">SAVE</Nav.Link>:
-            <Nav.Link eventKey="link-2">EDIT</Nav.Link>}
+            <Nav.Link eventKey="link-2">EDIT</Nav.Link> }
       </Nav.Item>
     </Nav>
   );

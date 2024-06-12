@@ -7,8 +7,13 @@ import DetailsMenu from './DetailsMenu'
 function Details({ selectedId, view }) {
     const inputMaker = useRef("")
     const [detailsObj, setDetailsObj] = useState({});
+    const [usePlaces,setUsePlace] = useState([]);
     useEffect(()=>{
-        fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
+        console.log(selectedId)
+        if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
+        },[view])
+    useEffect(()=>{
+        fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
   return (
       <>
@@ -17,7 +22,10 @@ function Details({ selectedId, view }) {
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
           <Form.Select id="disabledSelect">
-            <option>{detailsObj.maker}</option>
+              {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
+{/*             <option>{detailsObj.maker}</option> */}
+{/*             <option>{detailsObj.maker}</option> */}
+{/*             <option>{detailsObj.maker}</option> */}
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
