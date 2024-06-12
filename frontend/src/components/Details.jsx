@@ -22,10 +22,7 @@ function Details({ selectedId, view }) {
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
           <Form.Select id="disabledSelect">
-              {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
-{/*             <option>{detailsObj.maker}</option> */}
-{/*             <option>{detailsObj.maker}</option> */}
-{/*             <option>{detailsObj.maker}</option> */}
+                <option>{detailsObj.maker}</option>
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
@@ -36,6 +33,16 @@ function Details({ selectedId, view }) {
           <Form.Label htmlFor="disabledTextInput">型番号</Form.Label>
           <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} />
         </Form.Group>
+        {view !== "detailsView" && (
+         <Form.Group className="mb-3">
+           <Form.Label htmlFor="disabledTextInput">使用場所</Form.Label>
+           <Form.Select id="disabledSelect">
+               <option value='' disabled selected>--選択してください--</option>
+               {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
+           </Form.Select>
+         </Form.Group>
+            )}
+
     </Form>
     </>
   );
