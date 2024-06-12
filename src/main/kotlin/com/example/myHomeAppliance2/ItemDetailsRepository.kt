@@ -18,7 +18,7 @@ class ItemRowMapper : RowMapper<ItemDetails> {
 @Component
 class IdRowMapper : RowMapper<Id> {
     override fun mapRow(rs: ResultSet, rowNum: Int): Id? {
-        return Id(rs.getLong(1))
+        return Id(rs.getInt(1))
     }
 }
 

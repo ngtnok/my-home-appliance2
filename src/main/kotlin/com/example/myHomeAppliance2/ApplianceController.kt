@@ -1,6 +1,7 @@
 package com.example.myHomeAppliance2
 
 import jakarta.websocket.server.PathParam
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -8,11 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepository: ItemDetailsRepository,val placeRepository: PlaceRepository) {
-    @GetMapping("/api/appliances/ids")
+class ApplianceController(
+    val idsRepository: IdsRepository,
+    val itemDetailsRepository: ItemDetailsRepository,
+    val placeRepository: PlaceRepository,
+    val detailsRepository: DetailsRepository,
+    val havingRepository: HavingRepository
+) {
+    @GetMapping("/api/ids") //修正済み未テスト
     fun getIds(): List<Ids> {
         return idsRepository.getIds()
     }
+
     @GetMapping("/api/appliances/{id}")
     fun getId(@PathVariable("id") id : Long): ItemDetails {
         return itemDetailsRepository.getItemDetails(id)
@@ -21,11 +29,22 @@ class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepos
     fun addMyAppliance(@RequestBody addAppliance: AddAppliance):Id{
         return itemDetailsRepository.insertItem(addAppliance)
     }
-    @PostMapping("/api/appliances/ids")
+    @PostMapping("/api/ids") //修正済み未テスト
     fun getMyIds(@RequestBody id: Id):List<Ids> {
         return idsRepository.getMyIds(id.id)
     }
-
+    @PostMapping("/api/details") //修正済み未テスト
+    fun getDetailsById(@RequestBody idPair: IdPair): Details {
+        return detailsRepository.getMyApp(idPair)
+    }
+    @PostMapping("/api/havings") //修正済み未テスト
+    fun addMyApp(@RequestBody edit:Edit): Id {
+        return havingRepository.insertMyApp(edit)
+    }
+    @DeleteMapping("/api/havings")//修正済み未テスト
+    fun delMyApp(@RequestBody idPair: IdPair){
+        havingRepository.deleteMyApp(idPair)
+    }
     @GetMapping("/api/use_places")
     fun getUsePlace(): List<IdName>{
         return placeRepository.getIdName()
