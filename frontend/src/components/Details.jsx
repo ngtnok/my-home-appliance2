@@ -8,6 +8,17 @@ function Details({ selectedId, view }) {
     const inputMaker = useRef("")
     const [detailsObj, setDetailsObj] = useState({});
     const [usePlaces,setUsePlace] = useState([]);
+    const [arrMaker, setMaker] = useState(["PANASONIC",
+"TOSHIBA",
+"HITACHI",
+"SONY",
+"三菱",
+"富士通",
+"NEC",
+"logicool",
+"Buffalo",
+"その他"
+]);
     useEffect(()=>{
         console.log(selectedId)
         if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
@@ -22,13 +33,17 @@ function Details({ selectedId, view }) {
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
           <Form.Select id="disabledSelect">
-                <option>{detailsObj.maker}</option>
+{/*               <option>{view}</option> */}
+                {detailsObj.maker ? <option selected>{detailsObj.maker}</option>:<option value='' disabled selected>--選択してください--</option>}
+               {arrMaker.map(makerName => <option key={makerName}>{makerName}</option>)}
           </Form.Select>
         </Form.Group>
+        {view !== "newForm" &&(
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">名称</Form.Label>
           <Form.Control id="disabledTextInput" placeholder={detailsObj.name} ref={inputMaker}/>
         </Form.Group>
+        )}
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">型番号</Form.Label>
           <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} />
