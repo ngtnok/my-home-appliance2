@@ -1,18 +1,24 @@
 import Card from 'react-bootstrap/Card';
 import {useState,useEffect} from 'react';
 
-function GalleryCard({ setView, setId }) {
+function GalleryCard({ setView, setId, view }) {
     const [gallery, setGallery] = useState([]);
     useEffect(()=>{
+        console.log("effect-time")
         const url = "/api/appliances/ids";
-        const id = 1;
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ id })
-        }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
+        if (view === "allItemView"){
+            fetch(url).then(res=>res.json()).then(jsoned =>console.log(jsoned)).catch(err=>console.error(err))
+        } else {
+            const id = 1; // 仮family_id
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id })
+            }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
+        }
+
         },[])
 
     const cardClick = (id) => {

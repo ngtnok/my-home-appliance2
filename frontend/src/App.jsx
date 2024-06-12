@@ -10,7 +10,7 @@ function App() {
   return (
       <>
       <HeaderMenu setView={setView} setId={setId} view={view}/>
-      {view === "homeView" ? <GalleryCard setView={setView} setId={setId}/>: <Details view={view} selectedId={selectedId}/>}
+      {view === "homeView" || view === "allItemView" ? <GalleryCard setView={setView} setId={setId}/>: <Details view={view} selectedId={selectedId}/>}
       </>
   )
 }

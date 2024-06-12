@@ -10,7 +10,7 @@ function HeaderMenu({setView,setId,view}) {
         <Nav.Link href="/home">HOME</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="link-2">SEARCH</Nav.Link>
+        <Nav.Link eventKey="link-2" onClick={()=>setView("allItemView")}>SEARCH</Nav.Link>
       </Nav.Item>
     </Nav>
   );
