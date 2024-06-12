@@ -1,10 +1,10 @@
 import Nav from 'react-bootstrap/Nav';
 
-function HeaderMenu() {
+function HeaderMenu({setView,setId,view}) {
   return (
     <Nav justify variant="tabs" defaultActiveKey="/home">
       <Nav.Item>
-        <Nav.Link eventKey="link-1">ADD</Nav.Link>
+          {view !== "detailsView" &&( <Nav.Link eventKey="link-1" onClick={()=> { setId(0); setView("newForm")}}>ADD</Nav.Link>)}
       </Nav.Item>
       <Nav.Item>
         <Nav.Link href="/home">HOME</Nav.Link>
