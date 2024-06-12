@@ -9,8 +9,8 @@ function App() {
     const [selectedId, setId] = useState(0);
   return (
       <>
-      <HeaderMenu />
-      {view === "homeView" ? <GalleryCard setView={setView} setId={setId}/>: <Details selectedId={selectedId}/>}
+      <HeaderMenu setView={setView}/>
+      {view === "homeView" ? <GalleryCard setView={setView} setId={setId}/>: <Details view={view} selectedId={selectedId}/>}
       </>
   )
 }
