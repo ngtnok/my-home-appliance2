@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepository: ItemDetailsRepository) {
+class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepository: ItemDetailsRepository,val placeRepository: PlaceRepository) {
     @GetMapping("/api/appliances/ids")
     fun getIds(): List<Ids> {
         return idsRepository.getIds()
@@ -24,5 +24,10 @@ class ApplianceController(val idsRepository: IdsRepository, val itemDetailsRepos
     @PostMapping("/api/appliances/ids")
     fun getMyIds(@RequestBody id: Id):List<Ids> {
         return idsRepository.getMyIds(id.id)
+    }
+
+    @GetMapping("/api/use_places")
+    fun getUsePlace(): List<IdName>{
+        return placeRepository.getIdName()
     }
 }
