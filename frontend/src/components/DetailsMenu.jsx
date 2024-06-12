@@ -1,13 +1,15 @@
 import Nav from 'react-bootstrap/Nav';
 
-function DetailsMenu() {
+function DetailsMenu({selectedId, view}) {
   return (
-    <Nav justify defaultActiveKey="link-2" className="justify-content-center">
+    <Nav justify defaultActiveKey="/home" className="justify-content-center">
       <Nav.Item>
         <Nav.Link href="/home">BACK</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="link-2">EDIT</Nav.Link>
+          {selectedId === 0?
+            <Nav.Link eventKey="link-2">SAVE</Nav.Link>:
+            <Nav.Link eventKey="link-2">EDIT</Nav.Link>}
       </Nav.Item>
     </Nav>
   );
