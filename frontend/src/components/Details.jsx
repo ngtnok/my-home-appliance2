@@ -19,8 +19,9 @@ function Details({ selectedId, view }) {
 "Buffalo",
 "その他"
 ]);
+//     const [arrCategory,setCategory] = useState(["",""])
     useEffect(()=>{
-        console.log(selectedId)
+//         console.log(selectedId)
         if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
         },[view])
     useEffect(()=>{
@@ -49,13 +50,31 @@ function Details({ selectedId, view }) {
           <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} />
         </Form.Group>
         {view !== "detailsView" && (
+            <>
          <Form.Group className="mb-3">
-           <Form.Label htmlFor="disabledTextInput">使用場所</Form.Label>
+           <Form.Label htmlFor="disabledSelect">分類</Form.Label>
+           <Form.Select id="disabledSelect">
+               <option value='' disabled selected>--選択してください--</option>
+               <option>大型家電</option>
+               <option>小型家電</option>
+           </Form.Select>
+         </Form.Group>
+         <Form.Group className="mb-3">
+           <Form.Label htmlFor="disabledSelect">使用場所</Form.Label>
            <Form.Select id="disabledSelect">
                <option value='' disabled selected>--選択してください--</option>
                {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
            </Form.Select>
          </Form.Group>
+         <Form.Group>
+            <Form.Label>購入日</Form.Label>
+            <Form.Control type="date"></Form.Control>
+         </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="disabledTextInput">購入元</Form.Label>
+          <Form.Control id="disabledTextInput" />
+        </Form.Group>
+         </>
             )}
 
     </Form>
