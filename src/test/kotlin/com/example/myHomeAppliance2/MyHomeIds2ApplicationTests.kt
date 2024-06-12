@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
@@ -93,5 +94,14 @@ class MyHomeIds2ApplicationTests(
 		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
 		val addId = response.body!!
 		assertThat(addId.id, equalTo(4))
+	}
+	@Test
+	fun `GET-api-use_placesリクエストに、use_placeテーブルからid,nameを返す`(){
+		val response = restTemplate.getForEntity("http://localhost:${port}/api/use_places", Array<IdName>::class.java)
+		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
+		val placeIdName = response.body!!
+		assertThat(placeIdName.size, equalTo(8))
+		assertThat(placeIdName[1].id, equalTo(2))
+		assertThat(placeIdName[1].name, equalTo("ダイニング"))
 	}
 }
