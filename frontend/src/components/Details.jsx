@@ -19,7 +19,6 @@ function Details({ selectedId, view }) {
 "Buffalo",
 "その他"
 ]);
-//     const [arrCategory,setCategory] = useState(["",""])
     useEffect(()=>{
 //         console.log(selectedId)
         if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
@@ -27,9 +26,12 @@ function Details({ selectedId, view }) {
     useEffect(()=>{
         fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
+    const onSubmit = () => {
+        console.log("青いSAVEボタン")
+        }
   return (
       <>
-      <DetailsMenu view={view} selectedId={selectedId}/>
+      <DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/>
     <Form>
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
@@ -76,7 +78,7 @@ function Details({ selectedId, view }) {
         </Form.Group>
          </>
             )}
-
+{/*         <Button variant="light" type="submit">SAVE</Button> */}
     </Form>
     </>
   );
