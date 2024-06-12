@@ -1,9 +1,9 @@
 package com.example.myHomeAppliance2
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.core.queryForObject
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
@@ -40,17 +40,20 @@ class ItemDetailsRepository(
         )!!
     }
     fun insertItem(addAppliance: AddAppliance): Id{
+        var selectAppId:Id = Id(0);
         val selectIdSql: String = "SELECT id FROM appliance WHERE model_number = ?"
         // 既存がなかったらエラーになる？
-//        val selectAppId: Id = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
-//        val categoryId = jdbcTemplate.queryForObject("SELECT id FROM category WHERE name = ?", idRowMapper ,addAppliance.categoryName)
-        // 既存がないときだけ、INSERTすべき
-//        val insertAppSql: String = "INSERT INTO appliance(name, maker_id, category_id,model_number) VALUES (?,?,?,?)"
-//        jdbcTemplate.update(insertAppSql,addAppliance.applianceName,addAppliance.makerId,categoryId,addAppliance.modelNumber)
-
-        val insertSql: String = "INSERT INTO family_to_appliance (family_id,appliance_id,use_place_id,buy_date,buy_at) " +
-                "VALUES (?,?,?,?,?)"
-        jdbcTemplate.update(insertSql,addAppliance.familyId,selectAppId.id,addAppliance.usePlaceId,addAppliance.buyDate,addAppliance.buyAt)
+        try {
+            selectAppId = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
+        } catch (err: EmptyResultDataAccessException) {
+            val categoryId: Id = jdbcTemplate.queryForObject("SELECT id FROM category WHERE name = ?", idRowMapper ,addAppliance.categoryName)!!
+            val insertAppSql: String = "INSERT INTO appliance(id,name,maker_id,category_id,model_number) VALUES (DEFAULT,?,?,?,?)"
+            jdbcTemplate.update(insertAppSql,addAppliance.applianceName,addAppliance.makerId,categoryId,addAppliance.modelNumber) // ここのinsert失敗して、finallyのinsertも失敗
+            selectAppId = jdbcTemplate.queryForObject(selectIdSql, idRowMapper, addAppliance.modelNumber)!!
+        } finally {
+            val insertSql: String = "INSERT INTO family_to_appliance (family_id,appliance_id,use_place_id,buy_date,buy_at) VALUES (?,?,?,?,?)"
+            jdbcTemplate.update(insertSql,addAppliance.familyId,selectAppId.id,addAppliance.usePlaceId,addAppliance.buyDate,addAppliance.buyAt)
+        }
         return selectAppId;
     }
 }

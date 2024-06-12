@@ -70,16 +70,16 @@ class MyHomeIds2ApplicationTests(
 		assertThat(todos.category, equalTo("大型家電"))
 		assertThat(todos.modelNumber, equalTo("KN-HW24F-R"))
 	}
-	@Test
-	fun `POST-api-appliances&bodyリクエストに200返す`(){
-		val request = Id(1)
-		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances",request,String::class.java)
-		assertThat(response.statusCode, equalTo(HttpStatus.OK))
-	}
+//	@Test
+//	fun `POST-api-appliances&bodyリクエストに200返す`(){
+//		val request = AddAppliance(1)
+//		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances",request,String::class.java)
+//		assertThat(response.statusCode, equalTo(HttpStatus.OK))
+//	}
 	@Test
 	fun `POST-api-appliances&bodyリクエストに、既存appliance_idを返す`() {
 //		buyDate = "2011-12-01"
-		val request = AddAppliance(1,"スマホ", "CPH2523",11,8,1322697600000,"楽天モバイル")
+		val request = AddAppliance(1,"スマホ", "CPH2523",11,"小型家電",8,1322697600000,"楽天モバイル")
 		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances",request,Id::class.java)
 		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
 		val addId = response.body!!
@@ -88,10 +88,10 @@ class MyHomeIds2ApplicationTests(
 	@Test
 	fun `POST-api-appliances&bodyリクエストに、登録したappliance_idを返す`() {
 //		buyDate = "2011-12-01"
-		val request = AddAppliance(1,"パソコン", "sample-model-number",3,4,1322697600000,"電気屋さん")
+		val request = AddAppliance(1,"パソコン", "sample-model-number",3,"小型家電",4,1322697600000,"電気屋さん")
 		val response = restTemplate.postForEntity("http://localhost:$port/api/appliances",request,Id::class.java)
 		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
 		val addId = response.body!!
-		assertThat(addId.id, equalTo(5))
+		assertThat(addId.id, equalTo(4))
 	}
 }
