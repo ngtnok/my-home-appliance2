@@ -11,11 +11,6 @@ function DetailsMenu({selectedId, view, onSubmit}) {
             <Nav.Link eventKey="link-2" onClick={onSubmit}>保存</Nav.Link>:*/}
             <Nav.Link eventKey="link-2" onClick={onSubmit}>保存</Nav.Link>
       </Nav.Item>
-{/*       <Nav.Item> */}
-{/*           {/*{selectedId === 0? */}
-{/*             <Nav.Link eventKey="link-2">取消</Nav.Link> */}
-{/*             :<Nav.Link eventKey="link-2">取消</Nav.Link> } */}
-{/*       </Nav.Item> */}
     </Nav>
   );
 }

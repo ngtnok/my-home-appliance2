@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -8,6 +9,20 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function SearchMenu() {
+    const [arrMaker, setMaker] = useState([
+        "--メーカーを選択してください--",
+        "SHARP",
+        "PANASONIC",
+        "TOSHIBA",
+        "HITACHI",
+        "SONY",
+        "三菱",
+        "富士通",
+        "NEC",
+        "logicool",
+        "Buffalo",
+        "その他"
+        ]);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
 {/*       <Container fluid> */}
@@ -36,8 +51,8 @@ function SearchMenu() {
 {/*             </Nav.Link> */}
 {/*           </Nav> */}
 {/*            <Form className="d-flex"> */}
-    <Row className="justify-content-md-center">
-        <Col>
+{/*     <Row className="justify-content-md-center"> */}
+{/*         <Col> */}
             <Form.Control
               type="search"
               placeholder="製品名称・型番号"
@@ -45,11 +60,17 @@ function SearchMenu() {
               aria-label="Search"
               style={{width: '100%'}}
             />
-        </Col>
-        <Col>
-            <Button variant="outline-primary">検索</Button>
-        </Col>
-    </Row>
+        <Form.Group className="mb-1">
+{/*           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label> */}
+          <Form.Select id="disabledSelect">
+               {arrMaker.map(makerName => <option key={makerName} >{makerName}</option>)}
+          </Form.Select>
+        </Form.Group>
+{/*        </Col>
+{/*         <Col>*/}
+{/*             <Button variant="outline-primary">検索</Button> */}
+{/*         </Col>*/}
+{/*     </Row>*/}
 {/*            </Form> */}
 {/*         </Navbar.Collapse> */}
 {/*       </Container> */}

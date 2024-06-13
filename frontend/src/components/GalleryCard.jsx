@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import {useState,useEffect} from 'react';
 import SearchMenu from './SearchMenu'
 
-function GalleryCard({ setView, setId, view, familyId }) {
+function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
     const [gallery, setGallery] = useState([]);
     useEffect(()=>{
         console.log("effect-time")
@@ -19,7 +19,7 @@ function GalleryCard({ setView, setId, view, familyId }) {
             }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
 //         }
 
-        },[view])
+        },[loadCnt])
 
     const cardClick = (id) => {
 //         fetch(`/api/appliances/${id}`).then(res=>res.json()).then(jsoned => console.log(jsoned)).catch(err=> console.error(err));
@@ -27,9 +27,9 @@ function GalleryCard({ setView, setId, view, familyId }) {
         setView("editView");
         }
 
-  return (
-    <>
-{/*     <SearchMenu /> */}
+    return (
+        <>
+            {view === "allItemView" &&( <SearchMenu />)}
       {gallery[0] && gallery.map((appliance) => (
         <Card
           bg='Light'

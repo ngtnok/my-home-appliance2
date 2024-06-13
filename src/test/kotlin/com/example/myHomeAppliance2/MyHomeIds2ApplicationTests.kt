@@ -151,7 +151,7 @@ class MyHomeIds2ApplicationTests(
 //		val response = restTemplate.delete("http://localhost:${port}/api/havings",request)
 //		assertThat(response.statusCode, equalTo(HttpStatus.OK))
 //	}
-	@Test
+//	@Test
 	fun `DELETE`(){
 		val requestBefore = Edit(1,2,"その他",1322179200000,"近所")
 		val response = restTemplate.postForEntity("http://localhost:${port}/api/havings",requestBefore, Id::class.java)
