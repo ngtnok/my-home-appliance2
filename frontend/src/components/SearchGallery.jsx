@@ -4,10 +4,15 @@ import SearchMenu from './SearchMenu'
 
 function SearchGallery({ allIds, setView, setId, view, familyId, loadCnt }) {
     const [gallery, setGallery] = useState(allIds);
+    const [searchWord, setSearchWord] = useState("")
 //     useEffect(()=>{
 //         fetch("/api/ids").then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
 //         },[loadCnt])
-
+    useEffect(()=>{
+//         console.log(searchWord)
+        const regexp = new RegExp(searchWord, 'i')
+        setGallery( allIds.filter(obj=> regexp.test(obj.appName) || regexp.test(obj.maker) || regexp.test(obj.modelNumber)))
+        },[searchWord])
     const cardClick = (id) => {
         setId(id);
         setView("editView");
@@ -15,7 +20,7 @@ function SearchGallery({ allIds, setView, setId, view, familyId, loadCnt }) {
 
     return (
         <>
-        <SearchMenu />
+        <SearchMenu setSearchWord={setSearchWord}/>
         {gallery[0] && gallery.map((appliance) => (
         <Card
           bg='Light'

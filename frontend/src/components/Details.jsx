@@ -45,7 +45,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
 //                     }
                 return res.json()
                 }).then(jsoned => {
-                console.log(jsoned);
+//                 console.log(jsoned);
                 setDetailsObj(jsoned);
                 inputName.current.value = detailsObj.appName
             }).catch(err=>{
@@ -59,7 +59,8 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         inputName.current.value = detailsObj.appName||selectedObj.appName;
         inputModel.current.value = detailsObj.modelNumber||selectedObj.modelNumber;
         inputUsePlace.current.value = detailsObj.usePlace || "--選択してください--";
-        inputBuyDate.current.value = new Date(detailsObj.buyDate).toLocaleDateString("sv-SE") || "";
+//         console.log(detailsObj.buyDate)
+        inputBuyDate.current.value = detailsObj.buyDate && new Date(detailsObj.buyDate).toLocaleDateString("sv-SE") //|| "";
         inputBuyAt.current.value = detailsObj.buyAt || "";
         },[detailsObj])
     useEffect(()=>{
@@ -67,11 +68,11 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         },[])
     const urlhavings = "/api/havings";
     const funFetch = postOrPatch => {
-        console.log({familyId});
-        console.log({appId:selectedId});
-        console.log({usePlace:inputUsePlace.current.value});
-        console.log({buyDate:Number(new Date(inputBuyDate.current.value))});
-        console.log({buyAt:inputBuyAt.current.value});
+//         console.log({familyId});
+//         console.log({appId:selectedId});
+//         console.log({usePlace:inputUsePlace.current.value});
+//         console.log({buyDate:Number(new Date(inputBuyDate.current.value))});
+//         console.log({buyAt:inputBuyAt.current.value});
         fetch("/api/havings",{
             method: postOrPatch,
             headers: {
@@ -85,9 +86,11 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
                 buyAt:inputBuyAt.current.value
             })
             }).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
+        setView("homeView")
+        reload(prev => prev + 1)
         }
     const onSubmit = () => {
-        console.log("青いSAVEボタン")
+//         console.log("青いSAVEボタン")
         funFetch("PATCH")
 //         fetch(urlhavings,{
 //                 method: "PATCH",
@@ -125,7 +128,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
 
     return (
         <>
-            <DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/>
+            {/**<DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/> */}
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
@@ -166,7 +169,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         </Form>
         {!detailsObj.appId ? (
       <Card className="text-center my-5">
-            <Button variant="primary" onClick={clickGet}>GETだぜ</Button>
+            <Button variant="primary" onClick={clickGet}>ようこそ</Button>
       </Card>
             ):(
       <Card className="text-center my-5">

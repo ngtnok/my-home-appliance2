@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -8,7 +8,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function SearchMenu() {
+function SearchMenu({ setSearchWord }) {
+    const inputNameOrModel = useRef();
+    const inputMaker = useRef();
     const [arrMaker, setMaker] = useState([
         "--メーカーを選択してください--",
         "SHARP",
@@ -23,57 +25,34 @@ function SearchMenu() {
         "Buffalo",
         "その他"
         ]);
+    const filtering = (e) => {
+//         console.log(inputMaker.current.value === "--メーカーを選択してください--")
+//         const inputWord = [
+//             inputNameOrModel.current.value,
+//             inputMaker.current.value !== "--メーカーを選択してください--" && inputMaker.current.value || ""
+//             ].join("|")
+//         if(e.isComposing && e.key === 'enter'){
+            setSearchWord(inputNameOrModel.current.value)
+//             }
+//         setSearchWord(inputWord)
+//         console.log(inputWord)
+        }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-{/*       <Container fluid> */}
-{/*         <Navbar.Brand href="#">Navbar scroll</Navbar.Brand> */}
-{/*         <Navbar.Toggle aria-controls="navbarScroll" /> */}
-{/*          <Navbar.Collapse id="navbarScroll">  */}
-{/*           <Nav */}
-{/*             className="me-auto my-2 my-lg-0" */}
-{/*             style={{ maxHeight: '100px' }} */}
-{/*             navbarScroll */}
-{/*           > */}
-{/*             <Nav.Link href="#action1">Home</Nav.Link> */}
-{/*             <Nav.Link href="#action2">Link</Nav.Link> */}
-{/*             <NavDropdown title="Link" id="navbarScrollingDropdown"> */}
-{/*               <NavDropdown.Item href="#action3">Action</NavDropdown.Item> */}
-{/*               <NavDropdown.Item href="#action4"> */}
-{/*                 Another action */}
-{/*               </NavDropdown.Item> */}
-{/*               <NavDropdown.Divider /> */}
-{/*               <NavDropdown.Item href="#action5"> */}
-{/*                 Something else here */}
-{/*               </NavDropdown.Item> */}
-{/*             </NavDropdown> */}
-{/*             <Nav.Link href="#" disabled> */}
-{/*               Link */}
-{/*             </Nav.Link> */}
-{/*           </Nav> */}
-{/*            <Form className="d-flex"> */}
-{/*     <Row className="justify-content-md-center"> */}
-{/*         <Col> */}
             <Form.Control
               type="search"
-              placeholder="製品名称・型番号"
+              placeholder="メーカー・製品名称・型番号"
               className="me-2"
               aria-label="Search"
               style={{width: '100%'}}
+              ref={inputNameOrModel}
+              onChange={filtering}
             />
-        <Form.Group className="mb-1">
-{/*           <Form.Label htmlFor="disabledSelect">メーカー</Form.Label> */}
-          <Form.Select id="disabledSelect">
-               {arrMaker.map(makerName => <option key={makerName} >{makerName}</option>)}
-          </Form.Select>
-        </Form.Group>
-{/*        </Col>
-{/*         <Col>*/}
-{/*             <Button variant="outline-primary">検索</Button> */}
-{/*         </Col>*/}
-{/*     </Row>*/}
-{/*            </Form> */}
-{/*         </Navbar.Collapse> */}
-{/*       </Container> */}
+{/*         <Form.Group className="mb-1"> */}
+{/*           <Form.Select id="disabledSelect" ref={inputMaker} onChange={filtering}> */}
+{/*                {arrMaker.map(makerName => <option key={makerName} >{makerName}</option>)} */}
+{/*           </Form.Select> */}
+{/*         </Form.Group> */}
     </Navbar>
   );
 }

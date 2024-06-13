@@ -27,6 +27,20 @@ class HavingRepository(
         jdbcTemplate.update(sql,edit.familyId,edit.appId,usePlaceId.id,edit.buyDate,edit.buyAt)
         return Id(edit.appId)
     }
+    fun fixMyApp(edit: Edit) {
+        if (edit.usePlace.toBoolean()) {
+            val sql: String = "UPDATE family_to_appliance SET use_place = ? WHERE family_id = ? AND appliance_id = ?";
+            jdbcTemplate.update(sql,edit.usePlace,edit.familyId,edit.appId);
+        }
+        if (edit.usePlace.toBoolean()) {
+            val sql: String = "UPDATE family_to_appliance SET buy_date = ? WHERE family_id = ? AND appliance_id = ?";
+            jdbcTemplate.update(sql,edit.buyDate,edit.familyId,edit.appId);
+        }
+        if (edit.usePlace.toBoolean()) {
+            val sql: String = "UPDATE family_to_appliance SET buy_at = ? WHERE family_id = ? AND appliance_id = ?";
+            jdbcTemplate.update(sql,edit.buyAt,edit.familyId,edit.appId);
+        }
+    }
     fun deleteMyApp(idPair: IdPair) {
         val sql: String = "DELETE FROM family_to_appliance WHERE family_id = ? AND appliance_id = ?"
         jdbcTemplate.update(sql,idPair.familyId,idPair.appId)
