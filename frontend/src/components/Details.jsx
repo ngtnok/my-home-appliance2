@@ -136,6 +136,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
           <Form.Control id="disabledTextInput" ref={inputBuyAt}/>
         </Form.Group>
         </Form>
+        <DetailsMenu />
                 <Card>
                   <Card.Header>使ってるみんなの声</Card.Header>
         {comments.map(obj=> (

@@ -23,7 +23,7 @@ class ApplianceController(
         return idsRepository.getIds()
     }
     @PostMapping("/api/ids")
-    fun getMyIds(@RequestBody id: Id):List<Ids> {
+    fun getMyIds(@RequestBody id: Id):List<IdsDurable> {
         return idsRepository.getMyIds(id.id)
     }
     @GetMapping("/api/appliances/{id}")
