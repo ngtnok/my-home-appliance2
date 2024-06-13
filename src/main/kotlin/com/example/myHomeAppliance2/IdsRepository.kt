@@ -12,7 +12,7 @@ import java.sql.ResultSet
 @Component
 class IdsRowMapper : RowMapper<Ids>{
     override fun mapRow(rs: ResultSet,rowNum: Int): Ids {
-        return Ids(rs.getLong(1),rs.getString(2))
+        return Ids(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4))
     }
 }
 
@@ -22,11 +22,14 @@ class IdsRepository(
     @Autowired val idsRowMapper: IdsRowMapper
 ){
     fun getIds(): List<Ids> {
-        return jdbcTemplate.query("SELECT id,name FROM appliance", idsRowMapper)
+        return jdbcTemplate.query("SELECT appliance.id,appliance.name,maker.name AS maker,model_number FROM appliance INNER JOIN maker ON maker.id = maker_id", idsRowMapper)
     }
-    fun getMyIds(id: Long): List<Ids> {
-        val sql:String = "SELECT appliance_id AS id, appliance.name AS name FROM family_to_appliance " +
-                "INNER JOIN appliance ON appliance.id = family_to_appliance.appliance_id WHERE family_id = ?"
+    fun getMyIds(id: Int): List<Ids> {
+        val sql:String = "SELECT appliance_id AS id, appliance.name AS name,maker.name AS maker, appliance.model_number " +
+                "FROM family_to_appliance " +
+                "INNER JOIN appliance ON appliance.id = family_to_appliance.appliance_id " +
+                "INNER JOIN maker ON appliance.maker_id = maker.id " +
+                "WHERE family_id = ?"
         return jdbcTemplate.query(sql,idsRowMapper,id)
     }
 }

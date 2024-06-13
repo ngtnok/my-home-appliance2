@@ -1,14 +1,23 @@
 import { useRef, useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 import DetailsMenu from './DetailsMenu'
 
-function Details({ selectedId, view }) {
+function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
+//     const inputMaker = useRef("")
+    const inputName = useRef("")
     const inputMaker = useRef("")
+    const inputModel = useRef("")
+    const inputUsePlace = useRef("")
+    const inputBuyDate = useRef("")
+    const inputBuyAt = useRef("")
     const [detailsObj, setDetailsObj] = useState({});
     const [usePlaces,setUsePlace] = useState([]);
-    const [arrMaker, setMaker] = useState(["PANASONIC",
+    const [arrMaker, setMaker] = useState([
+"SHARP",
+"PANASONIC",
 "TOSHIBA",
 "HITACHI",
 "SONY",
@@ -20,23 +29,107 @@ function Details({ selectedId, view }) {
 "その他"
 ]);
     useEffect(()=>{
-//         console.log(selectedId)
-        if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
+//         if(!!selectedId)
+        fetch("/api/details",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ familyId, appId:selectedId })
+            }).then(res=>{
+//                 if(res.status === 500 ){
+//                     // Detailsは使わずにIdsからidで抽出
+//                     console.log(selectedId)
+//                     fetch("/api/ids").then(res=>res.json()).then(jres => setDetailsObj(jres.filter(obj => obj.appId === selectedId))).catch(err=> console.error(err))
+//                     throw error
+//                     }
+                return res.json()
+                }).then(jsoned => {
+                console.log(jsoned);
+                setDetailsObj(jsoned);
+                inputName.current.value = detailsObj.appName
+            }).catch(err=>{
+                // まだ持ってない家電のIdsから1件をよぶ
+//                 console.error("まだ持ってないやつ")
+                });
         },[view])
+    useEffect(()=>{
+        const selectedObj = allIds.find(obj=> obj.appId === selectedId)
+        inputMaker.current.value = detailsObj.maker||selectedObj.maker;
+        inputName.current.value = detailsObj.appName||selectedObj.appName;
+        inputModel.current.value = detailsObj.modelNumber||selectedObj.modelNumber;
+        inputUsePlace.current.value = detailsObj.usePlace || "--選択してください--";
+        inputBuyDate.current.value = new Date(detailsObj.buyDate).toLocaleDateString("sv-SE") || "";
+        inputBuyAt.current.value = detailsObj.buyAt || "";
+        },[detailsObj])
     useEffect(()=>{
         fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
+    const urlhavings = "/api/havings";
+    const funFetch = postOrPatch => {
+        console.log({familyId});
+        console.log({appId:selectedId});
+        console.log({usePlace:inputUsePlace.current.value});
+        console.log({buyDate:Number(new Date(inputBuyDate.current.value))});
+        console.log({buyAt:inputBuyAt.current.value});
+        fetch("/api/havings",{
+            method: postOrPatch,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                familyId,
+                appId:selectedId,
+                usePlace:inputUsePlace.current.value,
+                buyDate:Number(new Date(inputBuyDate.current.value)),
+                buyAt:inputBuyAt.current.value
+            })
+            }).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
+        }
     const onSubmit = () => {
         console.log("青いSAVEボタン")
+        funFetch("PATCH")
+//         fetch(urlhavings,{
+//                 method: "PATCH",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 body: JSON.stringify({
+//                     familyId,
+//                     appId:detailsObj.appId,
+//                     usePlace:inputUsePlace.current.value,
+//                     buyDate:Number(new Date(inputBuyDate.current.value)),
+//                     buyAt:inputBuyAt.current.value
+//                 })
+//             }).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
         }
-  return (
-      <>
-      <DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/>
-    <Form>
-        <Form.Group className="mb-3">
-          <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
-          <Form.Select id="disabledSelect">
-{/*               <option>{view}</option> */}
+    const clickGet = () => {
+        console.log("ようこそ")
+        funFetch("POST")
+        }
+    const clickDelete = () => {
+        console.log("今まで大変お世話になりました")
+        fetch(urlhavings,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                },
+            body: JSON.stringify({
+                familyId,
+                appId: selectedId
+                })
+            })
+        setView("homeView")
+        reload(prev => prev + 1)
+        }
+
+    return (
+        <>
+            <DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/>
+            <Form>
+                <Form.Group className="mb-3">
+                    <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
+                    <Form.Select id="disabledSelect" disabled ref={inputMaker}>
                 {detailsObj.maker ? <option selected>{detailsObj.maker}</option>:<option value='' disabled selected>--選択してください--</option>}
                {arrMaker.map(makerName => <option key={makerName}>{makerName}</option>)}
           </Form.Select>
@@ -44,42 +137,42 @@ function Details({ selectedId, view }) {
         {view !== "newForm" &&(
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">名称</Form.Label>
-          <Form.Control id="disabledTextInput" placeholder={detailsObj.name} ref={inputMaker}/>
+          <Form.Control id="disabledTextInput" disabled ref={inputName}/>
         </Form.Group>
         )}
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">型番号</Form.Label>
-          <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} />
+          <Form.Control id="disabledTextInput" disabled placeholder={detailsObj.modelNumber} ref={inputModel}/>
         </Form.Group>
-        {view !== "detailsView" && (
+        {/**{view === "editView" && ( */}
             <>
          <Form.Group className="mb-3">
-           <Form.Label htmlFor="disabledSelect">分類</Form.Label>
-           <Form.Select id="disabledSelect">
-               <option value='' disabled selected>--選択してください--</option>
-               <option>大型家電</option>
-               <option>小型家電</option>
-           </Form.Select>
-         </Form.Group>
-         <Form.Group className="mb-3">
            <Form.Label htmlFor="disabledSelect">使用場所</Form.Label>
-           <Form.Select id="disabledSelect">
-               <option value='' disabled selected>--選択してください--</option>
-               {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
+           <Form.Select id="disabledSelect" ref={inputUsePlace}>
+               <option disabled>--選択してください--</option>
+           {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
            </Form.Select>
          </Form.Group>
          <Form.Group>
             <Form.Label>購入日</Form.Label>
-            <Form.Control type="date"></Form.Control>
+            <Form.Control type="date" ref={inputBuyDate}></Form.Control>
          </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">購入元</Form.Label>
-          <Form.Control id="disabledTextInput" />
+          <Form.Control id="disabledTextInput" ref={inputBuyAt}/>
         </Form.Group>
          </>
-            )}
-{/*         <Button variant="light" type="submit">SAVE</Button> */}
-    </Form>
+           {/** )} */}
+        </Form>
+        {!detailsObj.appId ? (
+      <Card className="text-center my-5">
+            <Button variant="primary" onClick={clickGet}>GETだぜ</Button>
+      </Card>
+            ):(
+      <Card className="text-center my-5">
+        <Button variant="outline-secondary" onClick={clickDelete}>今までありがとう</Button>
+      </Card>
+      )}
     </>
   );
 }
