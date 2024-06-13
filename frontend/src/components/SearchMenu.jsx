@@ -26,16 +26,7 @@ function SearchMenu({ setSearchWord }) {
         "その他"
         ]);
     const filtering = (e) => {
-//         console.log(inputMaker.current.value === "--メーカーを選択してください--")
-//         const inputWord = [
-//             inputNameOrModel.current.value,
-//             inputMaker.current.value !== "--メーカーを選択してください--" && inputMaker.current.value || ""
-//             ].join("|")
-//         if(e.isComposing && e.key === 'enter'){
             setSearchWord(inputNameOrModel.current.value)
-//             }
-//         setSearchWord(inputWord)
-//         console.log(inputWord)
         }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -48,11 +39,6 @@ function SearchMenu({ setSearchWord }) {
               ref={inputNameOrModel}
               onChange={filtering}
             />
-{/*         <Form.Group className="mb-1"> */}
-{/*           <Form.Select id="disabledSelect" ref={inputMaker} onChange={filtering}> */}
-{/*                {arrMaker.map(makerName => <option key={makerName} >{makerName}</option>)} */}
-{/*           </Form.Select> */}
-{/*         </Form.Group> */}
     </Navbar>
   );
 }

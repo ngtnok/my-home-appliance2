@@ -15,13 +15,17 @@ class ApplianceController(
     val itemDetailsRepository: ItemDetailsRepository,
     val placeRepository: PlaceRepository,
     val detailsRepository: DetailsRepository,
-    val havingRepository: HavingRepository
+    val havingRepository: HavingRepository,
+    val historyRepository: HistoryRepository
 ) {
     @GetMapping("/api/ids") //修正済み未テスト
     fun getIds(): List<Ids> {
         return idsRepository.getIds()
     }
-
+    @PostMapping("/api/ids")
+    fun getMyIds(@RequestBody id: Id):List<Ids> {
+        return idsRepository.getMyIds(id.id)
+    }
     @GetMapping("/api/appliances/{id}")
     fun getId(@PathVariable("id") id : Long): ItemDetails {
         return itemDetailsRepository.getItemDetails(id)
@@ -29,10 +33,6 @@ class ApplianceController(
     @PostMapping("/api/appliances")
     fun addMyAppliance(@RequestBody addAppliance: AddAppliance):Id{
         return itemDetailsRepository.insertItem(addAppliance)
-    }
-    @PostMapping("/api/ids")
-    fun getMyIds(@RequestBody id: Id):List<Ids> {
-        return idsRepository.getMyIds(id.id)
     }
     @PostMapping("/api/details")
     fun getDetailsById(@RequestBody idPair: IdPair): Details {
@@ -53,5 +53,13 @@ class ApplianceController(
     @GetMapping("/api/use_places")
     fun getUsePlace(): List<IdName>{
         return placeRepository.getIdName()
+    }
+    @GetMapping("/api/comments/{id}")
+    fun getComments(@PathVariable("id") id : Int): List<ShortHistory> {
+        return historyRepository.getComments(id)
+    }
+    @PostMapping("/api/comments")
+    fun addComment(@RequestBody history: History):Id {
+        return historyRepository.insertComment(history)
     }
 }

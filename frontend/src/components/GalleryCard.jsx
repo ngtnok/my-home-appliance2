@@ -5,11 +5,7 @@ import SearchMenu from './SearchMenu'
 function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
     const [gallery, setGallery] = useState([]);
     useEffect(()=>{
-//         console.log("effect-time")
         const url = "/api/ids";
-//         if (view === "allItemView"){
-//             fetch(url).then(res=>res.json()).then(jsoned =>console.log(jsoned)).catch(err=>console.error(err))
-//         } else {
             fetch(url, {
                 method: "POST",
                 headers: {
@@ -17,12 +13,10 @@ function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
                 },
                 body: JSON.stringify({ id: familyId })
             }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
-//         }
 
         },[loadCnt])
 
     const cardClick = (id) => {
-//         fetch(`/api/appliances/${id}`).then(res=>res.json()).then(jsoned => console.log(jsoned)).catch(err=> console.error(err));
         setId(id);
         setView("editView");
         }

@@ -32,7 +32,8 @@ class MyHomeIds2ApplicationTests(
 	@Autowired val restTemplate: TestRestTemplate,
 	@LocalServerPort val port: Int,
 	@Autowired val jdbcTemplate: JdbcTemplate,
-	@Autowired val familyRowMapper: FamilyRowMapper
+	@Autowired val familyRowMapper: FamilyRowMapper,
+	@Autowired val historyRowMapper: HistoryRowMapper
 ) {
 	@Test
 	fun contextLoads() {
@@ -162,5 +163,22 @@ class MyHomeIds2ApplicationTests(
 		println(before.size)
 		println(after.size)
 		assertThat(before.size, equalTo(after.size))
+	}
+	@Test
+	fun `GET-comments---idでappId一致するShortHistory返す`(){
+		val response = restTemplate.getForEntity("http://localhost:$port/api/comments/3", Array<ShortHistory>::class.java)
+		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
+		val arrShortHistories = response.body!!
+		assertThat(arrShortHistories.size, equalTo(3))
+		assertThat(arrShortHistories[0].comment, equalTo("牛乳入れるの早いと吹きこぼれる〜〜！"))
+	}
+	@Test
+	fun `POST-comments-with-Historyで、historyにinsertする`(){
+		val before = jdbcTemplate.query("SELECT * FROM history", historyRowMapper)
+//		"buy-date:2011-11-25"
+		val request = History(2,2,1322179200000,1718287117640, "testコメント")
+		val response = restTemplate.postForEntity("http://localhost:${port}/api/comments",request, Id::class.java)
+		val after = jdbcTemplate.query("SELECT * FROM history", historyRowMapper)
+		assertThat(before.size + 1, equalTo(after.size))
 	}
 }
