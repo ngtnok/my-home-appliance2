@@ -7,5 +7,5 @@ CREATE TABLE history (
     comment VARCHAR NOT NULL,
     CONSTRAINT fk_app_id
         FOREIGN KEY(app_id)
-        REFERENCES appliance(id),
+        REFERENCES appliance(id)
 )

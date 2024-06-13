@@ -1,4 +1,4 @@
-TRUNCATE TABLE family_to_appliance;
+TRUNCATE TABLE family_to_appliance,history;
 INSERT INTO family_to_appliance (family_id, appliance_id, use_place_id, buy_date, buy_at)
     VALUES
     (1,1,7,1515628800000,'楽天市場'),
@@ -12,4 +12,4 @@ INSERT INTO history
     (4,135,9,1613952000000,1718278262606,'すごくいい！'),
     (5,2,3,1613952000000,1718278262606,'簡単に肉じゃができたよ'),
     (6,1,3,1613952000000,1718278262606,'副料理長みたい！'),
-    (7,135,1,1613952000000,1718278262606,'すごくいい！');
+    (7,135,2,1613952000000,1718278262606,'すごくいい！');

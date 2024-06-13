@@ -163,4 +163,12 @@ class MyHomeIds2ApplicationTests(
 		println(after.size)
 		assertThat(before.size, equalTo(after.size))
 	}
+	@Test
+	fun `GET-comments---idでappId一致するShortHistory返す`(){
+		val response = restTemplate.getForEntity("http://localhost:$port/api/comments/3", Array<ShortHistory>::class.java)
+		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
+		val arrShortHistories = response.body!!
+		assertThat(arrShortHistories.size, equalTo(3))
+		assertThat(arrShortHistories[0].comment, equalTo("牛乳入れるの早いと吹きこぼれる〜〜！"))
+	}
 }
