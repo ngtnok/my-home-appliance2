@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -138,11 +139,10 @@ class MyHomeIds2ApplicationTests(
 	}
 //	@Test
 //	fun `PATCH-api-havings-with-bodyリクエストで、family_to_applianceにupdateする。appIdを返す`(){
-//		"buy-date:2011-11-25"
+////		"buy-date:2011-11-25"
 //		val request = Edit(2,2,"リビング",1322179200000,"ケーヨーデイツー")
-//		restTemplate.setRequest
-//		val response = restTemplate.patchForObject("http://localhost:${port}/api/havings",request, Id::class.java)
-//		val id = response.body!!
+//		val response = restTemplate.exchange("http://localhost:${port}/api/havings",request, Id::class.java)
+//		val id:Id = response.body!!
 //		assertThat(id.id, equalTo(2))
 //	}
 //	@Test
@@ -151,7 +151,7 @@ class MyHomeIds2ApplicationTests(
 //		val response = restTemplate.delete("http://localhost:${port}/api/havings",request)
 //		assertThat(response.statusCode, equalTo(HttpStatus.OK))
 //	}
-//	@Test
+	@Test
 	fun `DELETE`(){
 		val requestBefore = Edit(1,2,"その他",1322179200000,"近所")
 		val response = restTemplate.postForEntity("http://localhost:${port}/api/havings",requestBefore, Id::class.java)
@@ -161,6 +161,6 @@ class MyHomeIds2ApplicationTests(
 		val after = jdbcTemplate.query("SELECT * FROM family_to_appliance", familyRowMapper)
 		println(before.size)
 		println(after.size)
-		assertThat(before.size - 1, equalTo(after.size))
+		assertThat(before.size, equalTo(after.size))
 	}
 }

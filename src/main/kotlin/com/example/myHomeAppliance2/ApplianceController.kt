@@ -3,6 +3,7 @@ package com.example.myHomeAppliance2
 import jakarta.websocket.server.PathParam
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -40,6 +41,10 @@ class ApplianceController(
     @PostMapping("/api/havings")
     fun addMyApp(@RequestBody edit:Edit): Id {
         return havingRepository.insertMyApp(edit)
+    }
+    @PatchMapping("/api/havings")
+    fun patchMyApp(@RequestBody edit: Edit){
+        havingRepository.fixMyApp(edit);
     }
     @DeleteMapping("/api/havings")
     fun delMyApp(@RequestBody idPair: IdPair){
