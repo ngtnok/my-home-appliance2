@@ -8,8 +8,9 @@ function Details({ selectedId, view, familyId }) {
 //     const inputMaker = useRef("")
     const inputName = useRef("")
     const inputModel = useRef("")
-    const inputBuyAt = useRef("")
+    const inputUsePlace = useRef("")
     const inputBuyDate = useRef("")
+    const inputBuyAt = useRef("")
     const [detailsObj, setDetailsObj] = useState({});
     const [usePlaces,setUsePlace] = useState([]);
     const [arrMaker, setMaker] = useState([
@@ -41,19 +42,49 @@ function Details({ selectedId, view, familyId }) {
     useEffect(()=>{
         inputName.current.value = detailsObj.appName;
         inputModel.current.value = detailsObj.modelNumber;
-        inputBuyAt.current.value = detailsObj.buyAt;
+        inputUsePlace.current.value = detailsObj.usePlace;
         inputBuyDate.current.value = new Date(detailsObj.buyDate).toLocaleDateString("sv-SE")
+        inputBuyAt.current.value = detailsObj.buyAt;
         },[detailsObj])
     useEffect(()=>{
         fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
-//     const [inputName,inputModel,inputBuyAt] = [...Array(3)].map(mark => mark = useRef())
-
+    const urlhavings = "/api/havings";
     const onSubmit = () => {
         console.log("青いSAVEボタン")
-    console.log(inputName.current.value)
-//         fetch(,{}).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
+//         console.log({familyId});
+//         console.log({appId:detailsObj.appId});
+//         console.log({usePlace:inputUsePlace.current.value});
+//         console.log({buyDate:Number(new Date(inputBuyDate.current.value))});
+//         console.log({buyAt:inputBuyAt.current.value});
+        fetch(urlhavings,{
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    familyId,
+                    appId:detailsObj.appId,
+                    usePlace:inputUsePlace.current.value,
+                    buyDate:Number(new Date(inputBuyDate.current.value)),
+                    buyAt:inputBuyAt.current.value
+                })
+            }).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
         }
+    const clickDelete = () => {
+        console.log("今まで大変お世話になりました")
+        fetch(urlhavings,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                },
+            body: JSON.stringify({
+                familyId,
+                appId: selectedId
+                })
+            })
+        }
+
   return (
       <>
       <DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/>
@@ -88,9 +119,9 @@ function Details({ selectedId, view, familyId }) {
 {/*          </Form.Group> */}
          <Form.Group className="mb-3">
            <Form.Label htmlFor="disabledSelect">使用場所</Form.Label>
-           <Form.Select id="disabledSelect">
+           <Form.Select id="disabledSelect" ref={inputUsePlace}>
 {/*                <option value='' disabled selected>--選択してください--</option> */}
-               <option value='' selected>{detailsObj.usePlace}</option>
+{/*                <option value='' >{detailsObj.usePlace}</option> */}
                {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
            </Form.Select>
          </Form.Group>
@@ -104,7 +135,7 @@ function Details({ selectedId, view, familyId }) {
         </Form.Group>
          </>
             )}
-{/*         <Button variant="light" type="submit">SAVE</Button> */}
+        <Button variant="outline-secondary" onClick={clickDelete}>今までありがとう</Button>
     </Form>
     </>
   );
