@@ -4,10 +4,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 function ButtonsExample({familyId,selectedId,buyDate}) {
-    console.log({familyId,selectedId,buyDate})
     const inputComment = useRef("")
     const clickSend = ()=>{
-        console.log(inputComment.current.value)
         fetch("/api/comments",{
             method: "POST",
             headers: {

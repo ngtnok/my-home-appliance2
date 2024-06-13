@@ -65,7 +65,7 @@ class MyHomeIds2ApplicationTests(
 	@Test
 	fun `POST-api-idsリクエストに家族ID一致するIdsリストを返す`(){
 		val request = Id(1)
-		val response = restTemplate.postForEntity("http://localhost:$port/api/ids",request,Array<Ids>::class.java)
+		val response = restTemplate.postForEntity("http://localhost:$port/api/ids",request,Array<IdsDurable>::class.java)
 		assertThat(response.headers.contentType, equalTo(MediaType.APPLICATION_JSON))
 		val arrayIds = response.body!!
 		assertThat(arrayIds.size, equalTo(2))

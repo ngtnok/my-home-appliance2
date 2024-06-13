@@ -32,7 +32,7 @@ class HistoryRepository(
         return jdbcTemplate.query(sql,shortHistoryRowMapper,id)
     }
     fun insertComment(history: History): Id {
-        val sql: String = "insert into history values (0,?,?,?,?,?);"
+        val sql: String = "insert into history values (10,?,?,?,?,?);"
         jdbcTemplate.update(sql,history.familyId,history.appId,history.buyDate,history.postDate,history.comment)
         return Id(history.appId)
     }

@@ -12,7 +12,8 @@ function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ id: familyId })
-            }).then(res=>res.json()).then(jres => setGallery(jres)).catch(err=> console.error(err))
+            }).then(res=>res.json()).then(jres => setGallery(jres)
+                ).catch(err=> console.error(err))
 
         },[loadCnt])
 
@@ -35,6 +36,7 @@ function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
           <Card.Body onClick={()=>cardClick(appliance.appId)}>
             <Card.Title>{appliance.appName}</Card.Title>
             <Card.Text>{appliance.maker}</Card.Text>
+            <Card.Text className="text-warning">{Math.floor((Number(new Date())-appliance.buyDate)/(365*24*60*60*1000))>9&&"**使用開始から10年経過しています**"}</Card.Text>
           </Card.Body>
         </Card>
       ))}
