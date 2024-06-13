@@ -23,8 +23,7 @@ class HavingRepository(
         val usePlaceId: Id = jdbcTemplate.queryForObject("SELECT id FROM use_place WHERE name = ?",idRowMapper,edit.usePlace)!!
         val sql: String = "INSERT INTO family_to_appliance(" +
                 "family_id,appliance_id,use_place_id,buy_date,buy_at" +
-                ") VALUES (" +
-                "?,?,?,?,?)"
+                ") VALUES (?,?,?,?,?)"
         jdbcTemplate.update(sql,edit.familyId,edit.appId,usePlaceId.id,edit.buyDate,edit.buyAt)
         return Id(edit.appId)
     }

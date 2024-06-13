@@ -4,11 +4,17 @@ import Form from 'react-bootstrap/Form';
 
 import DetailsMenu from './DetailsMenu'
 
-function Details({ selectedId, view }) {
-    const inputMaker = useRef("")
+function Details({ selectedId, view, familyId }) {
+//     const inputMaker = useRef("")
+    const inputName = useRef("")
+    const inputModel = useRef("")
+    const inputBuyAt = useRef("")
+    const inputBuyDate = useRef("")
     const [detailsObj, setDetailsObj] = useState({});
     const [usePlaces,setUsePlace] = useState([]);
-    const [arrMaker, setMaker] = useState(["PANASONIC",
+    const [arrMaker, setMaker] = useState([
+"SHARP",
+"PANASONIC",
 "TOSHIBA",
 "HITACHI",
 "SONY",
@@ -20,14 +26,33 @@ function Details({ selectedId, view }) {
 "その他"
 ]);
     useEffect(()=>{
-//         console.log(selectedId)
-        if(!!selectedId) fetch(`/api/appliances/${selectedId}`).then(res=>res.json()).then(jsoned => setDetailsObj(jsoned)).catch(err=> console.error(err));
+        if(!!selectedId) fetch("/api/details",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ familyId, appId:selectedId })
+            }).then(res=>res.json()).then(jsoned => {
+                console.log(jsoned);
+                setDetailsObj(jsoned);
+                inputName.current.value = detailsObj.appName
+            }).catch(err=> console.error(err));
         },[view])
+    useEffect(()=>{
+        inputName.current.value = detailsObj.appName;
+        inputModel.current.value = detailsObj.modelNumber;
+        inputBuyAt.current.value = detailsObj.buyAt;
+        inputBuyDate.current.value = new Date(detailsObj.buyDate).toLocaleDateString("sv-SE")
+        },[detailsObj])
     useEffect(()=>{
         fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
+//     const [inputName,inputModel,inputBuyAt] = [...Array(3)].map(mark => mark = useRef())
+
     const onSubmit = () => {
         console.log("青いSAVEボタン")
+    console.log(inputName.current.value)
+//         fetch(,{}).then(res=>res.json()).then(jsoned=> console.log(jsoned)).catch(err=>console.error(err))
         }
   return (
       <>
@@ -44,37 +69,38 @@ function Details({ selectedId, view }) {
         {view !== "newForm" &&(
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">名称</Form.Label>
-          <Form.Control id="disabledTextInput" placeholder={detailsObj.name} ref={inputMaker}/>
+          <Form.Control id="disabledTextInput" ref={inputName}/>
         </Form.Group>
         )}
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">型番号</Form.Label>
-          <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} />
+          <Form.Control id="disabledTextInput" placeholder={detailsObj.modelNumber} ref={inputModel}/>
         </Form.Group>
-        {view !== "detailsView" && (
+        {view === "editView" && (
             <>
-         <Form.Group className="mb-3">
-           <Form.Label htmlFor="disabledSelect">分類</Form.Label>
-           <Form.Select id="disabledSelect">
-               <option value='' disabled selected>--選択してください--</option>
-               <option>大型家電</option>
-               <option>小型家電</option>
-           </Form.Select>
-         </Form.Group>
+{/*          <Form.Group className="mb-3"> */}
+{/*            <Form.Label htmlFor="disabledSelect">分類</Form.Label> */}
+{/*            <Form.Select id="disabledSelect"> */}
+{/*                <option value='' disabled selected>--選択してください--</option> */}
+{/*                <option>大型家電</option> */}
+{/*                <option>小型家電</option> */}
+{/*            </Form.Select> */}
+{/*          </Form.Group> */}
          <Form.Group className="mb-3">
            <Form.Label htmlFor="disabledSelect">使用場所</Form.Label>
            <Form.Select id="disabledSelect">
-               <option value='' disabled selected>--選択してください--</option>
+{/*                <option value='' disabled selected>--選択してください--</option> */}
+               <option value='' selected>{detailsObj.usePlace}</option>
                {usePlaces.map(placeObj => <option key={placeObj.id}>{placeObj.name}</option>)}
            </Form.Select>
          </Form.Group>
          <Form.Group>
             <Form.Label>購入日</Form.Label>
-            <Form.Control type="date"></Form.Control>
+            <Form.Control type="date" ref={inputBuyDate}></Form.Control>
          </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label htmlFor="disabledTextInput">購入元</Form.Label>
-          <Form.Control id="disabledTextInput" />
+          <Form.Control id="disabledTextInput" placeholder={detailsObj.buyAt} ref={inputBuyAt}/>
         </Form.Group>
          </>
             )}

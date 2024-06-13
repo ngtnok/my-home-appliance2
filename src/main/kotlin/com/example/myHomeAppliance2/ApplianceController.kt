@@ -29,19 +29,19 @@ class ApplianceController(
     fun addMyAppliance(@RequestBody addAppliance: AddAppliance):Id{
         return itemDetailsRepository.insertItem(addAppliance)
     }
-    @PostMapping("/api/ids") //修正済み未テスト
+    @PostMapping("/api/ids")
     fun getMyIds(@RequestBody id: Id):List<Ids> {
         return idsRepository.getMyIds(id.id)
     }
-    @PostMapping("/api/details") //修正済み未テスト
+    @PostMapping("/api/details")
     fun getDetailsById(@RequestBody idPair: IdPair): Details {
         return detailsRepository.getMyApp(idPair)
     }
-    @PostMapping("/api/havings") //修正済み未テスト
+    @PostMapping("/api/havings")
     fun addMyApp(@RequestBody edit:Edit): Id {
         return havingRepository.insertMyApp(edit)
     }
-    @DeleteMapping("/api/havings")//修正済み未テスト
+    @DeleteMapping("/api/havings")
     fun delMyApp(@RequestBody idPair: IdPair){
         havingRepository.deleteMyApp(idPair)
     }

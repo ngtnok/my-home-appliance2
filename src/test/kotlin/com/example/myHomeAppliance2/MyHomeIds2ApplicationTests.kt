@@ -11,6 +11,7 @@ import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
@@ -102,7 +103,7 @@ class MyHomeIds2ApplicationTests(
 		val details = response.body!!
 //		assertThat(details.size, equalTo(1))
 		assertThat(details.appId, equalTo(1))
-		assertThat(details.usePlace, equalTo("キッチン"))
+		assertThat(details.usePlace, equalTo("書斎"))
 		assertThat(details.buyAt, equalTo("楽天市場"))
 	}
 //	@Test
@@ -144,12 +145,22 @@ class MyHomeIds2ApplicationTests(
 //		val id = response.body!!
 //		assertThat(id.id, equalTo(2))
 //	}
+//	@Test
+//	fun `DELETE200`(){
+//		val request = IdPair(1,2)
+//		val response = restTemplate.delete("http://localhost:${port}/api/havings",request)
+//		assertThat(response.statusCode, equalTo(HttpStatus.OK))
+//	}
 	@Test
 	fun `DELETE`(){
+		val requestBefore = Edit(1,2,"その他",1322179200000,"近所")
+		val response = restTemplate.postForEntity("http://localhost:${port}/api/havings",requestBefore, Id::class.java)
 		val before = jdbcTemplate.query("SELECT * FROM family_to_appliance", familyRowMapper)
-		val request = IdPair(1,1)
+		val request = IdPair(1,2)
 		restTemplate.delete("http://localhost:${port}/api/havings",request)
 		val after = jdbcTemplate.query("SELECT * FROM family_to_appliance", familyRowMapper)
+		println(before.size)
+		println(after.size)
 		assertThat(before.size - 1, equalTo(after.size))
 	}
 }
