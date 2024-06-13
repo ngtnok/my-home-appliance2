@@ -159,7 +159,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload, loadCnt 
             )}
         {!detailsObj.appId ? (
             <Card className="text-center my-5">
-                <Button variant="primary" onClick={clickGet} href="/home">ようこそ</Button>
+                <Button variant="primary" onClick={clickGet} href="/">ようこそ</Button>
             </Card>
         ):(
             <>
