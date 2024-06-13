@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 import DetailsMenu from './DetailsMenu'
+import InputComment from './InputComment'
 
 function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
 //     const inputMaker = useRef("")
@@ -164,6 +165,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
                   </Card.Body>
             ))}
                 </Card>
+        <InputComment familyId={familyId} selectedId={selectedId} buyDate={inputBuyDate.current.value} />
         {!detailsObj.appId ? (
             <Card className="text-center my-5">
                 <Button variant="primary" onClick={clickGet}>ようこそ</Button>
