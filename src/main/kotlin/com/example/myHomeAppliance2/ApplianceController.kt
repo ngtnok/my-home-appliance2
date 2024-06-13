@@ -58,4 +58,8 @@ class ApplianceController(
     fun getComments(@PathVariable("id") id : Int): List<ShortHistory> {
         return historyRepository.getComments(id)
     }
+    @PostMapping("/api/comments")
+    fun addComment(@RequestBody history: History):Id {
+        return historyRepository.insertComment(history)
+    }
 }

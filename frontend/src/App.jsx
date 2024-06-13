@@ -17,7 +17,6 @@ function App() {
         },[loadCnt])
   return (
       <>
-      {view}
       <Card className="text-center">
         <Card.Title>うちの家電＋</Card.Title>
       </Card>

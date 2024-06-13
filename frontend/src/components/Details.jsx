@@ -7,7 +7,6 @@ import DetailsMenu from './DetailsMenu'
 import InputComment from './InputComment'
 
 function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
-//     const inputMaker = useRef("")
     const inputName = useRef("")
     const inputMaker = useRef("")
     const inputModel = useRef("")
@@ -31,7 +30,6 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
 "その他"
 ]);
     useEffect(()=>{
-//         if(!!selectedId)
         fetch("/api/details",{
             method: "POST",
             headers: {
@@ -39,20 +37,11 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
             },
             body: JSON.stringify({ familyId, appId:selectedId })
             }).then(res=>{
-//                 if(res.status === 500 ){
-//                     // Detailsは使わずにIdsからidで抽出
-//                     console.log(selectedId)
-//                     fetch("/api/ids").then(res=>res.json()).then(jres => setDetailsObj(jres.filter(obj => obj.appId === selectedId))).catch(err=> console.error(err))
-//                     throw error
-//                     }
                 return res.json()
                 }).then(jsoned => {
-//                 console.log(jsoned);
                 setDetailsObj(jsoned);
                 inputName.current.value = detailsObj.appName
             }).catch(err=>{
-                // まだ持ってない家電のIdsから1件をよぶ
-//                 console.error("まだ持ってないやつ")
                 });
         },[view])
     useEffect(()=>{
@@ -61,7 +50,6 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         inputName.current.value = detailsObj.appName||selectedObj.appName;
         inputModel.current.value = detailsObj.modelNumber||selectedObj.modelNumber;
         inputUsePlace.current.value = detailsObj.usePlace || "--選択してください--";
-//         console.log(detailsObj.buyDate)
         inputBuyDate.current.value = detailsObj.buyDate && new Date(detailsObj.buyDate).toLocaleDateString("sv-SE") //|| "";
         inputBuyAt.current.value = detailsObj.buyAt || "";
         },[detailsObj])
@@ -114,7 +102,6 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
 
     return (
         <>
-            {/**<DetailsMenu view={view} selectedId={selectedId} onSubmit={onSubmit}/> */}
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="disabledSelect">メーカー</Form.Label>
