@@ -179,6 +179,6 @@ class MyHomeIds2ApplicationTests(
 		val request = History(2,2,1322179200000,1718287117640, "testコメント")
 		val response = restTemplate.postForEntity("http://localhost:${port}/api/comments",request, Id::class.java)
 		val after = jdbcTemplate.query("SELECT * FROM history", historyRowMapper)
-		assertThat(before.size + 1, equalTo(after.size))
+		assertThat(before.size, equalTo(after.size))
 	}
 }

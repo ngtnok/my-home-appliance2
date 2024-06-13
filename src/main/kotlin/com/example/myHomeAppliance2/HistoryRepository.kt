@@ -21,19 +21,29 @@ class HistoryRowMapper : RowMapper<History> {
         return History(rs.getInt(1),rs.getInt(2),rs.getLong(3),rs.getLong(4),rs.getString(5))
     }
 }
+@Component
+class CntRowMapper : RowMapper<Int> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): Int? {
+        return rs.getInt(1)
+    }
+}
 
 @Repository
 class HistoryRepository(
     @Autowired val jdbcTemplate: JdbcTemplate,
-    @Autowired val shortHistoryRowMapper: ShortHistoryRowMapper
+    @Autowired val shortHistoryRowMapper: ShortHistoryRowMapper,
+    @Autowired val cntRowMapper: CntRowMapper
 ){
     fun getComments(id: Int):List<ShortHistory> {
         val sql: String = "SELECT comment,buy_date,post_date FROM history WHERE app_id = ?";
         return jdbcTemplate.query(sql,shortHistoryRowMapper,id)
     }
     fun insertComment(history: History): Id {
-        val sql: String = "insert into history values (10,?,?,?,?,?);"
-        jdbcTemplate.update(sql,history.familyId,history.appId,history.buyDate,history.postDate,history.comment)
+        val rowsCntSql = "SELECT COUNT(id) FROM history"
+        val arrHistory = jdbcTemplate.query(rowsCntSql,cntRowMapper)
+        println(arrHistory[0])
+        val sql: String = "insert into history values (?,?,?,?,?,?);"
+        jdbcTemplate.update(sql,arrHistory[0]+1,history.familyId,history.appId,history.buyDate,history.postDate,history.comment)
         return Id(history.appId)
     }
 }

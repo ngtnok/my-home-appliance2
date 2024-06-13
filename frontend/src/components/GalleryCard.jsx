@@ -15,7 +15,7 @@ function GalleryCard({ setView, setId, view, familyId, loadCnt }) {
             }).then(res=>res.json()).then(jres => setGallery(jres)
                 ).catch(err=> console.error(err))
 
-        },[loadCnt])
+        },[loadCnt,view])
 
     const cardClick = (id) => {
         setId(id);
