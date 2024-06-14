@@ -13,7 +13,7 @@
 
 ## 使用技術
 - フロントエンド：React(vite)
-- バックエンド：SpringBoot(kotlin)
+- バックエンド：kotlin(SpringBoot)
 
 ## 環境構築
 | ディレクトリ      | command           | 実行内容                               | 元のコマンド                                                              |
