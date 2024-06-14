@@ -14,7 +14,7 @@ function App() {
     const familyId = 1; //仮の家族ID
     useEffect(()=>{
         fetch("/api/ids").then(res=>res.json()).then(jres => setIds(jres)).catch(err=> console.error(err))
-        },[loadCnt])
+        },[view])
   return (
       <>
       <Card className="text-center">
@@ -23,7 +23,7 @@ function App() {
       <HeaderMenu setView={setView} setId={setId} view={view}/>
         {view === "allItemView" && <SearchGallery allIds={allIds} setView={setView} setId={setId} familyId={familyId} loadCnt={loadCnt} />}
         {view === "homeView" && <GalleryCard  setView={setView} setId={setId} familyId={familyId} loadCnt={loadCnt} />}
-        {view === "editView" && <Details allIds={allIds} view={view} selectedId={selectedId} familyId={familyId} setView={setView} reload={reload}/>}
+        {view === "editView" && <Details allIds={allIds} view={view} selectedId={selectedId} familyId={familyId} setView={setView} reload={reload} loadCnt={loadCnt} />}
       </>
   )
 }

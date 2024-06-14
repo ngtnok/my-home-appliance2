@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-function ButtonsExample({familyId,selectedId,buyDate}) {
+function ButtonsExample({familyId,selectedId,buyDate,reload,commentLoad}) {
     const inputComment = useRef("")
     const clickSend = ()=>{
         fetch("/api/comments",{
@@ -15,10 +15,13 @@ function ButtonsExample({familyId,selectedId,buyDate}) {
                 familyId,
                 appId:selectedId,
                 buyDate:Number(new Date(buyDate)),
-                postDate: Number(new Date() )
+                postDate: Number(new Date() ),
+                comment: inputComment.current.value
             })
             }).then(res=> res.json() ).then(jsoned => console.log(jsoned) ).catch(err=>console.error(err) )
         inputComment.current.value = ""
+        reload(prev=> prev +1)
+        commentLoad(prev=> prev +1)
         }
   return (
       <InputGroup className="mb-5">

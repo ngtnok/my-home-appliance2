@@ -6,13 +6,14 @@ import Form from 'react-bootstrap/Form';
 import DetailsMenu from './DetailsMenu'
 import InputComment from './InputComment'
 
-function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
+function Details({ allIds, selectedId, view, familyId, setView ,reload, loadCnt }) {
     const inputName = useRef("")
     const inputMaker = useRef("")
     const inputModel = useRef("")
     const inputUsePlace = useRef("")
     const inputBuyDate = useRef("")
     const inputBuyAt = useRef("")
+    const [commentLoadCnt,commentLoad] = useState(0);
     const [detailsObj, setDetailsObj] = useState({});
     const [comments, setComments] = useState([])
     const [usePlaces,setUsePlace] = useState([]);
@@ -55,7 +56,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         },[detailsObj])
     useEffect(()=>{
         fetch(`/api/comments/${selectedId}`).then(res=> res.json() ).then(jsoned=>setComments(jsoned) ).catch(err=> console.error(err) )
-        },[])
+        },[commentLoadCnt,reload])
     useEffect(()=>{
         fetch("/api/use_places").then(res=>res.json()).then(jsoned => setUsePlace(jsoned)).catch(err=>console.error(err))
         },[])
@@ -83,6 +84,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
     const clickGet = () => {
         console.log("ようこそ")
         funFetch("POST")
+
         }
     const clickDelete = () => {
         console.log("今まで大変お世話になりました")
@@ -137,10 +139,11 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
         </Form.Group>
         </Form>
         <DetailsMenu />
+        {comments[0] && (
                 <Card>
                   <Card.Header>使ってるみんなの声</Card.Header>
         {comments.map(obj=> (
-                  <Card.Body>
+                  <Card.Body key={obj.comment}>
                     <blockquote className="blockquote mb-0">
                       <p>
                         {' '}
@@ -153,15 +156,18 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload }) {
                   </Card.Body>
             ))}
                 </Card>
-        <InputComment familyId={familyId} selectedId={selectedId} buyDate={inputBuyDate.current.value} />
+            )}
         {!detailsObj.appId ? (
             <Card className="text-center my-5">
-                <Button variant="primary" onClick={clickGet}>ようこそ</Button>
+                <Button variant="primary" onClick={clickGet} href="/">ようこそ</Button>
             </Card>
         ):(
+            <>
+            <InputComment familyId={familyId} selectedId={selectedId} buyDate={inputBuyDate.current.value} reload={reload} commentLoad={commentLoad}/>
             <Card className="text-center my-5">
                 <Button variant="outline-secondary" onClick={clickDelete}>今までありがとう</Button>
             </Card>
+            </>
         )}
     </>
   );
