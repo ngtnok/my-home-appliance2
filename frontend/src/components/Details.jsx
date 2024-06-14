@@ -138,7 +138,7 @@ function Details({ allIds, selectedId, view, familyId, setView ,reload, loadCnt 
           <Form.Control id="disabledTextInput" ref={inputBuyAt}/>
         </Form.Group>
         </Form>
-        <DetailsMenu />
+        <DetailsMenu setView={setView}/>
         {comments[0] && (
                 <Card>
                   <Card.Header>使ってるみんなの声</Card.Header>
