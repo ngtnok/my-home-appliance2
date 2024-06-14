@@ -22,6 +22,7 @@
 | /frontend          | npm i             | 必要なパッケージのインストール         |                                                                           |
 | /frontend          | npm run build     | ビルド                                 | vite build                                                                |
 | my-home-appliance2 | ./gradlew bootrun             | バックエンドサーバー起動 <br> （テスト起動、マイグレーション・シード適用を含む）         |                                                                           |
+http://localhost:8081/
 
 ## データベース my_home_appliance2
 
